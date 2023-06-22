@@ -1,0 +1,11 @@
+{
+  "name": "task-manager-apis",
+  "version": "1.0.0",
+  "description": "Mini project apis of node training",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Harsh Kumar",
+  "license": "ISC"
+}
