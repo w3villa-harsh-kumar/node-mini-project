@@ -1,37 +1,46 @@
 require("dotenv").config();
 require("express-async-errors");
 
-const cors = require("cors");
-
+// database connection
 const connectMongoDB = require("./db/db.connect");
 
-// error handler
-const notFoundMiddleware = require('./middlewares/not-found');
-const errorHandlerMiddleware = require('./middlewares/error-handler');
+// routes
+const userRoutes = require('./routes/users.routes')
 
-const express = require("express"); 
+// error handler
+const notFoundMiddleware = require("./middlewares/not-found");
+const errorHandlerMiddleware = require("./middlewares/error-handler");
+
+const cors = require("cors");
+const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// express middleware 
-app.use(cors());
+// express middleware
+app.use(cors({
+    origin: process.env.CORS_ORIGIN,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+    res.send("Hello World!");
 });
 
+// Routes
+app.use(`/api/${process.env.API_VERSION}/users`, userRoutes);
+
+// Error Handler
 app.use(notFoundMiddleware);
-app.use(errorHandlerMiddleware); 
+app.use(errorHandlerMiddleware);
 
 app.listen(PORT, async () => {
-  try {
-    await connectMongoDB();
-    console.log(`MongoDB connected`);
-    console.log(`Example app listening at http://localhost:${PORT}`); 
-  } catch (error) {
-    console.log("Error in Connecting Database", error.toString());
-    process.exit(1);
-  }
+    try {
+        await connectMongoDB();
+        console.log(`MongoDB connected`);
+        console.log(`Example app listening at http://localhost:${PORT}`);
+    } catch (error) {
+        console.log("Error in Connecting Database", error.toString());
+        process.exit(1);
+    }
 });
