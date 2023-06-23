@@ -10,7 +10,6 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
-            err: err,
             msg: "Something went wrong, please try again",
             success: false,
         });

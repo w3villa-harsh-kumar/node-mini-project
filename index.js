@@ -6,6 +6,7 @@ const connectMongoDB = require("./db/db.connect");
 
 // routes
 const userRoutes = require('./routes/users.routes')
+const taskRoutes = require('./routes/tasks.routes')
 
 // error handler
 const notFoundMiddleware = require("./middlewares/not-found");
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 
 // Routes
 app.use(`/api/${process.env.API_VERSION}/users`, userRoutes);
+app.use(`/api/${process.env.API_VERSION}/tasks`, taskRoutes);
 
 // Error Handler
 app.use(notFoundMiddleware);
