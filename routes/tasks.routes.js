@@ -24,13 +24,16 @@ router.post(
     validator(createTaskValidations, "body"),
     createTask
 );
+
 router.get("/", authenticate, getAllTasks);
+
 router.get(
     "/:id",
     authenticate,
     validator(idParamValidations, "params"),
     getTask
 );
+
 router.patch(
     "/:id",
     authenticate,

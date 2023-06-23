@@ -16,7 +16,7 @@ module.exports = {
 
         // create new user
         const newUser = await User.create(req.body);
-        const token = newUser.generateAuthToken();
+        const token = newUser.generateAuthToken();  
 
         // send back token
         res.status(StatusCodes.CREATED).json({

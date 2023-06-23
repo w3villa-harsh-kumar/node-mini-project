@@ -38,11 +38,13 @@ module.exports = {
     }),
 
     idParamValidations: Joi.object({
-        id: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required().messages({
-            "string.pattern.base": `Id should be a valid mongo id`,
-            "string.empty": `Id cannot be an empty field`,
-            "any.required": `Id is a required field`,
-        }),
+        id: Joi.string()
+            .regex(/^[0-9a-fA-F]{24}$/)
+            .required()
+            .messages({
+                "string.pattern.base": `Id should be a valid mongo id`,
+                "string.empty": `Id cannot be an empty field`,
+                "any.required": `Id is a required field`,
+            }),
     }),
-    
 };

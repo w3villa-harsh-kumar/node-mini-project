@@ -5,8 +5,8 @@ require("express-async-errors");
 const connectMongoDB = require("./db/db.connect");
 
 // routes
-const userRoutes = require('./routes/users.routes')
-const taskRoutes = require('./routes/tasks.routes')
+const userRoutes = require("./routes/users.routes");
+const taskRoutes = require("./routes/tasks.routes");
 
 // error handler
 const notFoundMiddleware = require("./middlewares/not-found");
@@ -18,9 +18,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // express middleware
-app.use(cors({
-    origin: process.env.CORS_ORIGIN,
-}));
+app.use(
+    cors({
+        origin: process.env.CORS_ORIGIN,
+    })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

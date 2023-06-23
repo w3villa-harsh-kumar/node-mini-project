@@ -28,9 +28,9 @@ module.exports = {
                     "Password must contain only alphanumeric characters and @",
                 "string.base": `Password is required`,
                 "string.empty": `Password should not be empty`,
-                "any.required": `password is required`,
                 "string.min": `Password should have a minimum length of {#limit}`,
                 "string.max": `Password should have a maximum length of {#limit}`,
+                "any.required": `password is required`,
             })
             .example("example@123"),
         phoneNumber: Joi.string()
