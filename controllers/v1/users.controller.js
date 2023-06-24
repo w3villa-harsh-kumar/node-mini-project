@@ -75,7 +75,7 @@ module.exports = {
         res.status(StatusCodes.OK).json({
             success: true,
             token,
-            msg: "Reset password token sent to email",
+            msg: "Here is our onetime token to reset password",
         });
     },
 

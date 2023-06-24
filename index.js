@@ -1,16 +1,18 @@
 require("dotenv").config();
 require("express-async-errors");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocs = require("./swagger/swagger");
 
 // database connection
 const connectMongoDB = require("./db/db.connect");
 
-// routes
-const userRoutes = require("./routes/users.routes");
-const taskRoutes = require("./routes/tasks.routes");
-
 // error handler
 const notFoundMiddleware = require("./middlewares/not-found");
 const errorHandlerMiddleware = require("./middlewares/error-handler");
+
+// routes
+const userRoutes = require("./routes/users.routes");
+const taskRoutes = require("./routes/tasks.routes");
 
 const cors = require("cors");
 const express = require("express");
@@ -26,18 +28,27 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Home Route
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+    res.send("welcome to task manager api");
 });
 
-// Routes
+// Swagger
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocs, { explorer: true })
+);
+
+// API Routes
 app.use(`/api/${process.env.API_VERSION}/users`, userRoutes);
 app.use(`/api/${process.env.API_VERSION}/tasks`, taskRoutes);
 
-// Error Handler
+// Error handling middleware
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
+// Listen to port
 app.listen(PORT, async () => {
     try {
         await connectMongoDB();
