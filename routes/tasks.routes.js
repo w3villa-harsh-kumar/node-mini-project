@@ -22,7 +22,7 @@ const router = require("express").Router();
 /**
  * @swagger
  *  paths:
- *   "/api/v1/tasks":
+ *   "/tasks":
  *     post:
  *       summary: Create Task
  *       tags:
@@ -72,7 +72,7 @@ router.post(
 /**
  * @swagger
  *  paths:
- *   "/api/v1/tasks":
+ *   "/tasks":
  *     get:
  *       summary: Get All Tasks
  *       tags:
@@ -103,7 +103,7 @@ router.get("/", authenticate, getAllTasks);
 /**
  * @swagger
  *  paths:
- *   "/api/v1/tasks/{id}":
+ *   "/tasks/{id}":
  *     get:
  *       summary: Get Task by ID
  *       tags:
@@ -146,7 +146,7 @@ router.get(
 /**
  * @swagger
  *  paths:
- *   "/api/v1/tasks/{id}":
+ *   "/tasks/{id}":
  *     patch:
  *       summary: Update Task by ID
  *       tags:
@@ -203,7 +203,7 @@ router.patch(
 /**
  * @swagger
  *  paths:
- *   "/api/v1/tasks/{id}":
+ *   "/tasks/{id}":
  *     delete:
  *       summary: Delete Task by ID
  *       tags:

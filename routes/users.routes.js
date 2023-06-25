@@ -21,7 +21,7 @@ const router = require("express").Router();
 /**
  * @swagger
  * paths:
- *   /api/v1/users/register:
+ *   /users/register:
  *     post:
  *       summary: Register User
  *       tags:
@@ -62,7 +62,7 @@ router.post("/register", validator(registerValidations, "body"), register);
 /**
  * @swagger
  * paths:
- *   /api/v1/users/login:
+ *   /users/login:
  *     post:
  *       summary: Login User
  *       tags:
