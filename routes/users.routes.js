@@ -3,7 +3,7 @@ const {
     login,
     forgotPassword,
     resetPassword,
-} = require(`../controllers/${process.env.API_VERSION}/users.controller`);
+} = require(`../controllers/v1/users.controller`);
 
 const {
     registerValidations,
@@ -19,111 +19,21 @@ const router = require("express").Router();
 // Auth Routes
 
 /**
- * @swagger
- * paths:
- *   /users/register:
- *     post:
- *       summary: Register User
- *       tags:
- *         - User
- *       consumes:
- *         - application/json
- *       parameters:
- *         - in: body
- *           name: user
- *           description: register a new user
- *           schema:
- *             type: object
- *             required:
- *               - name
- *               - email
- *               - password
- *               - phoneNumber
- *             properties:
- *               name:
- *                 type: string
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *               phoneNumber:
- *                 type: string
- *       responses:
- *         200:
- *           description: Created
- *         400:
- *           description: Bad Request
- *         500:
- *           description: Internal Server Error
+ * Route for user registration
+ * @route POST /api/v1/users/register
  */
-
 router.post("/register", validator(registerValidations, "body"), register);
 
 /**
- * @swagger
- * paths:
- *   /users/login:
- *     post:
- *       summary: Login User
- *       tags:
- *         - User
- *       consumes:
- *         - application/json
- *       parameters:
- *         - in: body
- *           name: user
- *           description: register a new user
- *           schema:
- *             type: object
- *             required:
- *               - email
- *               - password
- *             properties:
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *       responses:
- *         200:
- *           description: Created
- *         400:
- *           description: Bad Request
- *         500:
- *           description: Internal Server Error
+ * Route for user login
+ * @route POST /api/v1/users/login
  */
-
 router.post("/login", validator(loginValidations, "body"), login);
 
 /**
- * @swagger
- * paths:
- *   /api/v1/users/forget-password:
- *     post:
- *       summary: Forget Password
- *       tags:
- *         - User
- *       consumes:
- *         - application/json
- *       parameters:
- *         - in: body
- *           name: user
- *           description: Forget Password
- *           schema:
- *             type: object
- *             required:
- *               - email
- *             properties:
- *               email:
- *                 type: string
- *       responses:
- *         200:
- *           description: Created
- *         400:
- *           description: Bad Request
- *         500:
- *           description: Internal Server Error
+ * Route for user forgot password
+ * @route POST /api/v1/users/forget-password
  */
-
 router.post(
     "/forget-password",
     validator(forgetPasswordValidations, "body"),
@@ -131,41 +41,9 @@ router.post(
 );
 
 /**
- * @swagger
- * paths:
- *   /api/v1/users/reset-password:
- *     post:
- *       summary: Reset Password
- *       tags:
- *         - User
- *       consumes:
- *         - application/json
- *       parameters:
- *         - in: body
- *           name: user
- *           description: Reset Password
- *           schema:
- *             type: object
- *             required:
- *               - password
- *               - confirmPassword
- *               - token
- *             properties:
- *               password:
- *                 type: string
- *               confirmPassword:
- *                 type: string
- *               token:
- *                 type: string
- *       responses:
- *         200:
- *           description: Created
- *         400:
- *           description: Bad Request
- *         500:
- *           description: Internal Server Error
+ * Route for user reset password
+ * @route POST /api/v1/users/reset-password
  */
-
 router.post(
     "/reset-password",
     validator(resetPasswordValidations, "body"),

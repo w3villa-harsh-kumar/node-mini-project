@@ -1,36 +1,110 @@
-const swaggerJSDoc = require("swagger-jsdoc");
+const swaggerAutogen = require("swagger-autogen")();
 
-// options for the swagger docs
-const swaggerOptions = {
-    swaggerDefinition: {
-        info: {
-            title: "Task Manager API",
-            version: "1.0.0",
-            description: "Task Manager API Information",
-            contact: {
-                name: "Harsh Kumar",
-                github: "https://github.com/w3villa-harsh-kumar",
-            },
-        },
-        schemes: ["http"],
-        host: "localhost:8000",
-        basePath: `/api/${process.env.API_VERSION}`,
+const outputFile = "./swagger/swagger.json";
+const endpointsFiles = ["../index.js", "../controllers/v1/**/*.js"];
+const doc = {
+    info: {
+        version: "1.0.0",
+        title: "Task API Documentation",
+        description: "Task API Documentation",
     },
-    securitySchemes: {
-        bearerAuth: {
-            type: "http",
-            scheme: "bearer",
-            bearerFormat: "JWT",
+    host: "localhost:8000",
+    basePath: "/",
+    schemes: ["http"],
+    consumes: ["application/json"],
+    produces: ["application/json"],
+    tags: [
+        {
+            name: "User",
+            description:
+                "Endpoints to register, login, forget password and reset password",
         },
-        security: [
-            {
-                bearerAuth: [],
-            },
-        ],
+        {
+            name: "Task",
+            description: "Endpoints to get, create, update and delete a task",
+        },
+        {
+            name: "Home",
+            description: "Endpoints to get home page",
+        },
+    ],
+    definitions: {
+        User: {
+            name: "exampleUser",
+            email: "example@gmail.com",
+            password: "123456",
+            phoneNumber: "1234567890",
+        },
+        Task: {
+            title: "Task title",
+            description: "Task description",
+        },
+        TasksResponse: {
+            success: true,
+            msg: "response message",
+            tasks: [],
+        },
+        UpdateTask: {
+            title: "Task title",
+            description: "Task description",
+            completed: true,
+        },
+        Login: {
+            email: "example@gmail.com",
+            password: "123456",
+        },
+        ForgetPassword: {
+            email: "example@gmail.com",
+        },
+        ForgetPasswordResponse: {
+            success: true,
+            token: "",
+            msg: "response message",
+        },
+        ResetPassword: {
+            password: "123456",
+            confirmPassword: "123456",
+            token: "",
+        },
+        ResetPasswordResponse: {
+            success: true,
+            msg: "response message",
+        },
+        AuthResponse: {
+            token: "",
+            success: true,
+            msg: "response message",
+        },
+        TaskResponse: {
+            success: true,
+            msg: "response message",
+            task: {},
+        },
+        SuccessResponse: {
+            success: true,
+            msg: "response message",
+        },
+        BadRequest: {
+            success: false,
+            msg: "response message",
+        },
+        NotFound: {
+            success: false,
+            msg: "response message",
+        },
+        Unauthenticated: {
+            success: false,
+            msg: "response message",
+        },
+        InternalServerError: {
+            success: false,
+            msg: "response message",
+        },
     },
-    apis: ["./routes/**/*.js"],
 };
 
-const swaggerDocs = swaggerJSDoc(swaggerOptions);
+swaggerAutogen(outputFile, endpointsFiles, doc)
+.then(() => {
+    require("../index.js");
+}); 
 
-module.exports = swaggerDocs;

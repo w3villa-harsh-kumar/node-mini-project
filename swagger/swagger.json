@@ -1,0 +1,684 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Task API Documentation",
+    "description": "Task API Documentation"
+  },
+  "host": "localhost:8000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "User",
+      "description": "Endpoints to register, login, forget password and reset password"
+    },
+    {
+      "name": "Task",
+      "description": "Endpoints to get, create, update and delete a task"
+    },
+    {
+      "name": "Home",
+      "description": "Endpoints to get home page"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "Home"
+        ],
+        "description": "Endpoint to Home route of the APIs",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/users/register": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Register a new user",
+        "description": "Endpoint to register a new user",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "User information.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/AuthResponse"
+            },
+            "description": "User registered successfully"
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/BadRequest"
+            },
+            "description": "Bad request"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            },
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/users/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Login a user",
+        "description": "Endpoint to login a user",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "User credentials.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/AuthResponse"
+            },
+            "description": "User logged in successfully"
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/BadRequest"
+            },
+            "description": "Invalid credentials"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            },
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/users/forget-password": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Send reset password token to email",
+        "description": "Endpoint to send reset password token to email",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "User email.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ForgetPassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/AuthResponse"
+            },
+            "description": "Reset password token sent to email"
+          },
+          "404": {
+            "schema": {
+              "$ref": "#/definitions/NotFound"
+            },
+            "description": "User does not exist"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            },
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/users/reset-password": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Reset password of a user",
+        "description": "Endpoint to reset password",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "User token and password.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ResetPassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/ResetPasswordResponse"
+            },
+            "description": "Password reset succesfully"
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/BadRequest"
+            },
+            "description": "Password cannot be same as old password"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            },
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/tasks/": {
+      "post": {
+        "tags": [
+          "Task"
+        ],
+        "summary": "Create a new task",
+        "description": "Endpoint to create a task",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Task information.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/TaskResponse"
+            },
+            "description": "Task created successfully"
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/BadRequest"
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/Unauthenticated"
+            },
+            "description": "Authentication invalid"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            },
+            "description": "Server error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Task"
+        ],
+        "summary": "Get all tasks",
+        "description": "Endpoint to get all tasks",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/TasksResponse"
+            },
+            "description": "All tasks retrieved successfully"
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/Unauthenticated"
+            },
+            "description": "Authentication invalid"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            },
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/tasks/{id}": {
+      "get": {
+        "tags": [
+          "Task"
+        ],
+        "summary": "Get a task by id",
+        "description": "Endpoint to get a task",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Task id."
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/TaskResponse"
+            },
+            "description": "Task retrieved successfully"
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/Unauthenticated"
+            },
+            "description": "Authentication invalid"
+          },
+          "404": {
+            "schema": {
+              "$ref": "#/definitions/NotFound"
+            },
+            "description": "Task not found"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            },
+            "description": "Server error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Task"
+        ],
+        "summary": "Update a task by id",
+        "description": "Endpoint to update a task",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Task id."
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Task information.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateTask"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/TaskResponse"
+            },
+            "description": "Task updated successfully"
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/Unauthenticated"
+            },
+            "description": "Authentication invalid"
+          },
+          "404": {
+            "schema": {
+              "$ref": "#/definitions/NotFound"
+            },
+            "description": "Task not found"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            },
+            "description": "Server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Task"
+        ],
+        "summary": "Delete a task by id",
+        "description": "Endpoint to delete a task",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Task id."
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            },
+            "description": "Task deleted successfully"
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/Unauthenticated"
+            },
+            "description": "Authentication invalid"
+          },
+          "404": {
+            "schema": {
+              "$ref": "#/definitions/NotFound"
+            },
+            "description": "Task not found"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            },
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "exampleUser"
+        },
+        "email": {
+          "type": "string",
+          "example": "example@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "123456"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "example": "1234567890"
+        }
+      }
+    },
+    "Task": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Task title"
+        },
+        "description": {
+          "type": "string",
+          "example": "Task description"
+        }
+      }
+    },
+    "TasksResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "msg": {
+          "type": "string",
+          "example": "response message"
+        },
+        "tasks": {
+          "type": "array",
+          "example": [],
+          "items": {}
+        }
+      }
+    },
+    "UpdateTask": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Task title"
+        },
+        "description": {
+          "type": "string",
+          "example": "Task description"
+        },
+        "completed": {
+          "type": "boolean",
+          "example": true
+        }
+      }
+    },
+    "Login": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "example@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "123456"
+        }
+      }
+    },
+    "ForgetPassword": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "example@gmail.com"
+        }
+      }
+    },
+    "ForgetPasswordResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "token": {
+          "type": "string",
+          "example": ""
+        },
+        "msg": {
+          "type": "string",
+          "example": "response message"
+        }
+      }
+    },
+    "ResetPassword": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string",
+          "example": "123456"
+        },
+        "confirmPassword": {
+          "type": "string",
+          "example": "123456"
+        },
+        "token": {
+          "type": "string",
+          "example": ""
+        }
+      }
+    },
+    "ResetPasswordResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "msg": {
+          "type": "string",
+          "example": "response message"
+        }
+      }
+    },
+    "AuthResponse": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "example": ""
+        },
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "msg": {
+          "type": "string",
+          "example": "response message"
+        }
+      }
+    },
+    "TaskResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "msg": {
+          "type": "string",
+          "example": "response message"
+        },
+        "task": {
+          "type": "object",
+          "properties": {}
+        }
+      }
+    },
+    "SuccessResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "msg": {
+          "type": "string",
+          "example": "response message"
+        }
+      }
+    },
+    "BadRequest": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": false
+        },
+        "msg": {
+          "type": "string",
+          "example": "response message"
+        }
+      }
+    },
+    "NotFound": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": false
+        },
+        "msg": {
+          "type": "string",
+          "example": "response message"
+        }
+      }
+    },
+    "Unauthenticated": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": false
+        },
+        "msg": {
+          "type": "string",
+          "example": "response message"
+        }
+      }
+    },
+    "InternalServerError": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": false
+        },
+        "msg": {
+          "type": "string",
+          "example": "response message"
+        }
+      }
+    }
+  }
+}

@@ -4,7 +4,7 @@ const {
     getTask,
     updateTask,
     deleteTask,
-} = require(`../controllers/${process.env.API_VERSION}/tasks.controller`);
+} = require(`../controllers/v1/tasks.controller`);
 
 const {
     createTaskValidations,
@@ -20,47 +20,9 @@ const router = require("express").Router();
 // Task Routes
 
 /**
- * @swagger
- *  paths:
- *   "/tasks":
- *     post:
- *       summary: Create Task
- *       tags:
- *       - Task
- *       consumes:
- *       - application/json
- *       parameters:
- *       - in: body
- *         name: task
- *         description: create a new task
- *         schema:
- *           type: object
- *           required:
- *           - title
- *           - description
- *           properties:
- *             title:
- *               type: string
- *             description:
- *               type: string
- *       - in: header
- *         name: Authorization
- *         description: The auth token generated from login
- *         schema:
- *           type: string
- *           format: uuid
- *           required: true
- *       responses:
- *         '200':
- *           description: Created
- *         '400':
- *           description: Bad Request
- *         '401':
- *           description: Unauthorized
- *         '500':
- *           description: Internal Server Error
+ * Route for creating task
+ * @route POST /api/v1/tasks
  */
-
 router.post(
     "/",
     authenticate,
@@ -68,74 +30,16 @@ router.post(
     createTask
 );
 
-
 /**
- * @swagger
- *  paths:
- *   "/tasks":
- *     get:
- *       summary: Get All Tasks
- *       tags:
- *       - Task
- *       consumes:
- *       - application/json
- *       parameters:
- *       - in: header
- *         name: Authorization
- *         description: The auth token generated from login
- *         schema:
- *           type: string
- *           format: uuid
- *           required: true
- *       responses:
- *         '200':
- *           description: Created
- *         '400':
- *           description: Bad Request
- *         '401':
- *           description: Unauthorized
- *         '500':
- *           description: Internal Server Error
+ * Route for getting all tasks
+ * @route GET /api/v1/tasks
  */
-
 router.get("/", authenticate, getAllTasks);
 
 /**
- * @swagger
- *  paths:
- *   "/tasks/{id}":
- *     get:
- *       summary: Get Task by ID
- *       tags:
- *       - Task
- *       consumes:
- *       - application/json
- *       parameters:
- *       - in: header
- *         name: Authorization
- *         description: The auth token generated from login
- *         schema:
- *           type: string
- *           format: uuid
- *           required: true
- *       - in: path
- *         name: id
- *         description: Task ID
- *         schema:
- *           type: string
- *           format: uuid
- *           required: true
- *       responses:
- *         '200':
- *           description: Created
- *         '400':
- *           description: Bad Request
- *         '401':
- *           description: Unauthorized
- *         '500':
- *           description: Internal Server Error
+ * Route for getting task by id
+ * @route GET /api/v1/tasks/:id
  */
-
 router.get(
     "/:id",
     authenticate,
@@ -144,54 +48,9 @@ router.get(
 );
 
 /**
- * @swagger
- *  paths:
- *   "/tasks/{id}":
- *     patch:
- *       summary: Update Task by ID
- *       tags:
- *       - Task
- *       consumes:
- *       - application/json
- *       parameters:
- *       - in: body
- *         name: task
- *         description: Update a task
- *         schema:
- *           type: object
- *           required:
- *           - title
- *           - description
- *           properties:
- *             title:
- *               type: string
- *             description:
- *               type: string
- *       - in: header
- *         name: Authorization
- *         description: The auth token generated from login
- *         schema:
- *           type: string
- *           format: uuid
- *           required: true
- *       - in: path
- *         name: id
- *         description: Task ID
- *         schema:
- *           type: string
- *           format: uuid
- *           required: true
- *       responses:
- *         '200':
- *           description: Created
- *         '400':
- *           description: Bad Request
- *         '401':
- *           description: Unauthorized
- *         '500':
- *           description: Internal Server Error
+ * Route for updating task by id
+ * @route PATCH /api/v1/tasks/:id
  */
-
 router.patch(
     "/:id",
     authenticate,
@@ -201,41 +60,9 @@ router.patch(
 );
 
 /**
- * @swagger
- *  paths:
- *   "/tasks/{id}":
- *     delete:
- *       summary: Delete Task by ID
- *       tags:
- *       - Task
- *       consumes:
- *       - application/json
- *       parameters:
- *       - in: header
- *         name: Authorization
- *         description: The auth token generated from login
- *         schema:
- *           type: string
- *           format: uuid
- *           required: true
- *       - in: path
- *         name: id
- *         description: Task ID
- *         schema:
- *           type: string
- *           format: uuid
- *           required: true
- *       responses:
- *         '200':
- *           description: Created
- *         '400':
- *           description: Bad Request
- *         '401':
- *           description: Unauthorized
- *         '500':
- *           description: Internal Server Error
+ * Route for deleting task by id
+ * @route DELETE /api/v1/tasks/:id
  */
-
 router.delete(
     "/:id",
     authenticate,

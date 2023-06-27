@@ -5,6 +5,12 @@ const authenticate = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   // Check if authorization header is present
+  /*
+      #swagger.responses[401] = {
+          schema: { $ref: "#/definitions/Unauthenticated" },
+          description: 'Authentication invalid'
+      }
+  */
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     throw new UnauthenticatedError("Authentication invalid");
   }

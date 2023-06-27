@@ -1,7 +1,9 @@
 require("dotenv").config();
 require("express-async-errors");
+
+// swagger
 const swaggerUi = require("swagger-ui-express");
-const swaggerDocs = require("./swagger/swagger");
+const swaggerDocs = require("./swagger/swagger.json");
 
 // database connection
 const connectMongoDB = require("./db/db.connect");
@@ -30,6 +32,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // Home Route
 app.get("/", (req, res) => {
+    /*
+        #swagger.tags = ['Home']
+        #swagger.description = 'Endpoint to Home route  of the APIs'
+    */
     res.send("welcome to task manager api");
 });
 
@@ -37,12 +43,12 @@ app.get("/", (req, res) => {
 app.use(
   "/api-docs",
   swaggerUi.serve,
-  swaggerUi.setup(swaggerDocs, { explorer: true })
+  swaggerUi.setup(swaggerDocs)
 );
 
 // API Routes
-app.use(`/api/${process.env.API_VERSION}/users`, userRoutes);
-app.use(`/api/${process.env.API_VERSION}/tasks`, taskRoutes);
+app.use(`/api/v1/users`, userRoutes);
+app.use(`/api/v1/tasks`, taskRoutes);
 
 // Error handling middleware
 app.use(notFoundMiddleware);
