@@ -63,4 +63,7 @@ userSchema.methods.comparePassword = async function (canditatePassword) {
     return isMatch;
 };
 
+// create index on email field
+userSchema.index({ email: 1 });
+
 module.exports = mongoose.model("User", userSchema);

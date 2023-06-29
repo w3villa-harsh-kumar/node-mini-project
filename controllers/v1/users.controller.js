@@ -269,4 +269,38 @@ module.exports = {
             return next(err);
         }
     },
+
+    getProfile: async (req, res, next) => {
+        /* 
+            #swagger.summary = 'Get user profile'
+            #swagger.tags = ['User']
+            #swagger.description = 'Endpoint to get user profile'
+        */
+        try {
+            // get user
+            const user = await User.findById(req.user._id).select(
+                "-password -__v -forgetPasswordToken"
+            );
+
+            // send back user
+            /*
+                #swagger.responses[200] = {
+                    schema: { $ref: "#/definitions/User" },
+                    description: 'User profile'
+                }
+            */
+            res.status(StatusCodes.OK).json({
+                success: true,
+                user,
+            });
+        } catch (err) {
+            /*
+                #swagger.responses[500] = {
+                    schema: { $ref: "#/definitions/InternalServerError" },
+                    description: 'Server error'
+                }
+            */
+            return next(err);
+        }
+    },
 };

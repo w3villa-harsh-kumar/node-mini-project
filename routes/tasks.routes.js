@@ -22,6 +22,7 @@ const router = require("express").Router();
 /**
  * Route for creating task
  * @route POST /api/v1/tasks
+ * @security JWT
  */
 router.post(
     "/",
@@ -33,12 +34,14 @@ router.post(
 /**
  * Route for getting all tasks
  * @route GET /api/v1/tasks
+ * @security JWT    
  */
 router.get("/", authenticate, getAllTasks);
 
 /**
  * Route for getting task by id
  * @route GET /api/v1/tasks/:id
+ * @security JWT
  */
 router.get(
     "/:id",
@@ -50,6 +53,7 @@ router.get(
 /**
  * Route for updating task by id
  * @route PATCH /api/v1/tasks/:id
+ * @security JWT
  */
 router.patch(
     "/:id",
@@ -62,6 +66,7 @@ router.patch(
 /**
  * Route for deleting task by id
  * @route DELETE /api/v1/tasks/:id
+ * @security JWT
  */
 router.delete(
     "/:id",

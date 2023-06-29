@@ -204,6 +204,42 @@
         }
       }
     },
+    "/api/v1/users/profile": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get user profile",
+        "description": "Endpoint to get user profile",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "description": "User profile"
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/Unauthenticated"
+            },
+            "description": "Authentication invalid"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            },
+            "description": "Server error"
+          }
+        }
+      }
+    },
     "/api/v1/tasks/": {
       "post": {
         "tags": [
@@ -264,6 +300,36 @@
           {
             "name": "authorization",
             "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "completed",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "fields",
+            "in": "query",
             "type": "string"
           }
         ],

@@ -17,6 +17,8 @@ module.exports = {
                     schema: { $ref: "#/definitions/Task" }
                 }
              */
+
+            // Create a new task for the logged in user
             const task = await Task.create({
                 ...req.body,
                 owner: req.user._id,
@@ -65,7 +67,48 @@ module.exports = {
             */
 
             // Get all tasks for the logged in user
-            const tasks = await Task.find({ owner: req.user._id });
+            const { completed, title, sort, fields } = req.query;
+            const queryObj = { owner: req.user._id };
+
+            // filter by completed status
+            if (completed) {
+                queryObj.completed = completed === "true" ? true : false;
+            }
+
+            // filter by title (case insensitive)
+            if (title) {
+                queryObj.title = { $regex: title, $options: "i" };
+            }
+
+            let tempTask = Task.find(queryObj);
+            // filter fields
+            if (fields) {
+                const fieldsList = fields.split(",").join(" ");
+                tempTask = tempTask.select(fieldsList);
+            }
+
+            // sort tasks
+            if (sort) {
+                const sortList = sort.split(",").join(" ");
+                tempTask = tempTask.sort(sortList);
+            } else {
+                tempTask = tempTask.sort("createdAt");
+            }
+
+            // pagination
+            const page = Number(req.query.page) || 1;
+            const limit = Number(req.query.limit) || 10;
+            const skip = (page - 1) * limit;
+
+            // calculate the total number of pages
+            const total = await Task.countDocuments(queryObj);
+            const pages = Math.ceil(total / limit);
+
+            // apply pagination
+            tempTask = tempTask.skip(skip).limit(limit);
+
+            // execute query
+            const tasks = await tempTask;
 
             // Send response
             /*
@@ -77,6 +120,9 @@ module.exports = {
             res.status(StatusCodes.OK).json({
                 success: true,
                 tasks,
+                count: tasks.length,
+                page,
+                totalPages: pages,
                 msg: "All tasks retrieved successfully",
             });
         } catch (err) {

@@ -3,6 +3,7 @@ const {
     login,
     forgotPassword,
     resetPassword,
+    getProfile,
 } = require(`../controllers/v1/users.controller`);
 
 const {
@@ -13,6 +14,7 @@ const {
 } = require(`../validations/users.validations`);
 
 const validator = require("../middlewares/validator");
+const authenticate = require("../middlewares/authenticate");
 
 const router = require("express").Router();
 
@@ -49,5 +51,12 @@ router.post(
     validator(resetPasswordValidations, "body"),
     resetPassword
 );
+
+/**
+ * Route for user profile
+ * @route GET /api/v1/users/profile
+ * @security JWT
+ */
+router.get("/profile", authenticate, getProfile);
 
 module.exports = router;

@@ -22,4 +22,7 @@ const taskSchema = new mongoose.Schema(
     }
 );
 
+// create index on owner
+taskSchema.index({ owner: 1 });
+
 module.exports = mongoose.model("Task", taskSchema);
