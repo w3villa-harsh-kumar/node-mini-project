@@ -1,7 +1,9 @@
 const { CustomAPIError } = require("../errors");
 const { StatusCodes } = require("http-status-codes");
+const logger = require("../loggers");
 const errorHandlerMiddleware = (err, req, res, next) => {
-    console.log(err);
+    logger.error(err);
+    logger.error(err.stack);
 
     // Check if error is a custom error
     if (err instanceof CustomAPIError) {

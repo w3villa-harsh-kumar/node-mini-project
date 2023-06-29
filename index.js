@@ -8,6 +8,10 @@ const swaggerDocs = require("./swagger/swagger.json");
 // database connection
 const connectMongoDB = require("./db/db.connect");
 
+// Logger
+const logger = require("./loggers");
+const { httpLogger, errorHttpLogger } = require("./loggers/httpLogger");
+
 // error handler
 const notFoundMiddleware = require("./middlewares/not-found");
 const errorHandlerMiddleware = require("./middlewares/error-handler");
@@ -29,6 +33,8 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(httpLogger);
+app.use(errorHttpLogger);
 
 // Home Route
 app.get("/", (req, res) => {
@@ -58,10 +64,10 @@ app.use(errorHandlerMiddleware);
 app.listen(PORT, async () => {
     try {
         await connectMongoDB();
-        console.log(`MongoDB connected`);
-        console.log(`Example app listening at http://localhost:${PORT}`);
+        logger.info(`MongoDB connected`);
+        logger.info(`Example app listening at http://localhost:${PORT}`);
     } catch (error) {
-        console.log("Error in Connecting Database", error.toString());
+        logger.error(`Error in Connecting Database ${error.toString()}`);
         process.exit(1);
     }
 });
