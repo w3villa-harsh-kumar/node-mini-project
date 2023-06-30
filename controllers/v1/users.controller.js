@@ -2,6 +2,7 @@ const { BadRequestError, NotFoundError } = require("../../errors");
 const User = require("../../models/user.model");
 const { StatusCodes } = require("http-status-codes");
 const { v4: uuid } = require("uuid");
+const { getValueFromCache, setValueInCache } = require("../../helpers");
 
 module.exports = {
     register: async (req, res, next) => {
@@ -36,6 +37,15 @@ module.exports = {
             // create new user
             const newUser = await User.create(req.body);
             const token = newUser.generateAuthToken();
+
+            // save user in cache
+            await setValueInCache(newUser._id.toString(), {
+                name: newUser.name,
+                email: newUser.email,
+                phoneNumber: newUser.phoneNumber,
+                createdAt: newUser.createdAt,
+                updatedAt: newUser.updatedAt,
+            });
 
             // send back token
             /* 
@@ -117,6 +127,51 @@ module.exports = {
             return next(err);
         }
     },
+
+    getProfile: async (req, res, next) => {
+        /* 
+                #swagger.summary = 'Get user profile'
+                #swagger.tags = ['User']
+                #swagger.description = 'Endpoint to get user profile'
+            */
+        try {
+            // get user
+            let user = await getValueFromCache(req.user._id.toString());
+            if (!user) {
+                console.log("Fetching from db");
+                const user = await User.findById(req.user._id).select(
+                    "-password -__v -forgetPasswordToken"
+                );
+                // save user in cache
+                await setValueInCache(user._id.toString(), user);
+            }
+
+            if (!user) {
+                throw new NotFoundError("User not found");
+            }
+
+            // send back user
+            /*
+                    #swagger.responses[200] = {
+                        schema: { $ref: "#/definitions/User" },
+                        description: 'User profile'
+                    }
+                */
+            res.status(StatusCodes.OK).json({
+                success: true,
+                user,
+            });
+        } catch (err) {
+            /*
+                    #swagger.responses[500] = {
+                        schema: { $ref: "#/definitions/InternalServerError" },
+                        description: 'Server error'
+                    }
+                */
+            return next(err);
+        }
+    },
+
     forgotPassword: async (req, res, next) => {
         try {
             /**
@@ -258,40 +313,6 @@ module.exports = {
             res.status(StatusCodes.OK).json({
                 success: true,
                 msg: "Password reset successfully",
-            });
-        } catch (err) {
-            /*
-                #swagger.responses[500] = {
-                    schema: { $ref: "#/definitions/InternalServerError" },
-                    description: 'Server error'
-                }
-            */
-            return next(err);
-        }
-    },
-
-    getProfile: async (req, res, next) => {
-        /* 
-            #swagger.summary = 'Get user profile'
-            #swagger.tags = ['User']
-            #swagger.description = 'Endpoint to get user profile'
-        */
-        try {
-            // get user
-            const user = await User.findById(req.user._id).select(
-                "-password -__v -forgetPasswordToken"
-            );
-
-            // send back user
-            /*
-                #swagger.responses[200] = {
-                    schema: { $ref: "#/definitions/User" },
-                    description: 'User profile'
-                }
-            */
-            res.status(StatusCodes.OK).json({
-                success: true,
-                user,
             });
         } catch (err) {
             /*

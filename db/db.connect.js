@@ -16,7 +16,7 @@ const connectMongoDB = () => {
     // Local MongoDB
     if (process.env.NODE_ENV === "development")
         return mongoose.connect(
-            `mongodb://${dbConfig.local.HOST}:${dbConfig.local.PORT}/${dbConfig.local.DB}`,
+            `mongodb://${dbConfig.development.HOST}:${dbConfig.development.PORT}/${dbConfig.development.DB}`,
             {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,

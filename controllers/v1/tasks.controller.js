@@ -1,6 +1,7 @@
 const Task = require("../../models/task.model");
 const { StatusCodes } = require("http-status-codes");
 const { NotFoundError } = require("../../errors");
+const { setValueInCache, getValueFromCache } = require("../../helpers");
 
 module.exports = {
     createTask: async (req, res, next) => {
@@ -34,6 +35,9 @@ module.exports = {
             if (!task) {
                 throw new BadRequestError("Task could not be created");
             }
+
+            // set task in cache
+            await setValueInCache(task._id.toString() + "_task", task);
 
             // Send response
             /*
@@ -152,10 +156,18 @@ module.exports = {
             const { id: taskId } = req.params;
 
             // Get task by id for the logged in user
-            const task = await Task.findOne({
-                _id: taskId,
-                owner: req.user._id,
-            });
+            let task = await getValueFromCache(
+                req.user._id.toString() + "_task"
+            );
+            if (!task) {
+                task = await Task.findOne({
+                    _id: taskId,
+                    owner: req.user._id,
+                });
+
+                // set task in cache
+                await setValueInCache(task._id.toString() + "_task", task);
+            }
 
             // Check if task is retrieved
             /*
