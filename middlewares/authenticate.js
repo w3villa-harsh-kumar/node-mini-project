@@ -12,13 +12,13 @@ const authenticate = (req, res, next) => {
       }
   */
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    throw new UnauthenticatedError("Authentication invalid");
+    throw new UnauthenticatedError("Not authorized to access this route");
   }
 
   // Get token
   const token = authHeader?.split(" ")[1];
   if (!token) {
-    throw new UnauthenticatedError("Authentication invalid");
+    throw new UnauthenticatedError("Not authorized to access this route");
   }
 
   try {
@@ -27,7 +27,7 @@ const authenticate = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
-    throw new UnauthenticatedError("Authentication invalid");
+    throw new UnauthenticatedError("Not authorized to access this route");
   }
 };
 

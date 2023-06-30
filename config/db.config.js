@@ -2,12 +2,17 @@
 require("dotenv").config();
 
 module.exports = {
-    local: {
+    development: {
         HOST: process.env.MONGODB_LOCAL_HOST,
         PORT: process.env.MONGODB_LOCAL_PORT,
         DB: process.env.MONGODB_LOCAL_DB,
     },
-    atlas: {
+    test: {
+        HOST: process.env.MONGODB_TEST_HOST,
+        PORT: process.env.MONGODB_TEST_PORT,
+        DB: process.env.MONGODB_TEST_DB,
+    },
+    production: {
         HOST: process.env.MONGODB_ATLAS_HOST,
         PORT: process.env.MONGODB_ATLAS_PORT,
         DB: process.env.MONGODB_ATLAS_DB,

@@ -3,22 +3,35 @@ const mongoose = require("mongoose");
 const dbConfig = require("../config/db.config");
 
 const connectMongoDB = () => {
-    // Local
-    return mongoose.connect(
-        `mongodb://${dbConfig.local.HOST}:${dbConfig.local.PORT}/${dbConfig.local.DB}`,
-        {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        }
-    );
+    // Test MongoDB
+    if (process.env.NODE_ENV === "test")
+        return mongoose.connect(
+            `mongodb://${dbConfig.test.HOST}:${dbConfig.test.PORT}/${dbConfig.test.DB}`,
+            {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+            }
+        );
 
-    // Atlas
-    // return mongoose.connect(`mongodb://${dbConfig.local.HOST}:${dbConfig.local.PORT}/${dbConfig.local.DB}`, {
-    //     useNewUrlParser: true,
-    //     useUnifiedTopology: true,
-    //     useFindAndModify: false,
-    //     useCreateIndex: true,
-    // });
+    // Local MongoDB
+    if (process.env.NODE_ENV === "development")
+        return mongoose.connect(
+            `mongodb://${dbConfig.local.HOST}:${dbConfig.local.PORT}/${dbConfig.local.DB}`,
+            {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+            }
+        );
+
+    // Atlas MongoDB (Production)
+    if (process.env.NODE_ENV === "production")
+        return mongoose.connect(
+            `mongodb://${dbConfig.atlas.USERNAME}:${dbConfig.atlas.PASSWORD}@${dbConfig.atlas.HOST}:${dbConfig.atlas.PORT}/${dbConfig.atlas.DB}?${dbConfig.atlas.OPTIONS}`,
+            {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+            }
+        );
 };
 
 module.exports = connectMongoDB;

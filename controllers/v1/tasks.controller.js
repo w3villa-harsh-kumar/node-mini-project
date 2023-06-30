@@ -120,8 +120,8 @@ module.exports = {
             res.status(StatusCodes.OK).json({
                 success: true,
                 tasks,
-                count: tasks.length,
-                page,
+                tasksPerPage: tasks.length,
+                currentPage: page,
                 totalPages: pages,
                 msg: "All tasks retrieved successfully",
             });
@@ -243,7 +243,7 @@ module.exports = {
             */
             res.status(StatusCodes.OK).json({
                 success: true,
-                updatedTask,
+                task: updatedTask,
                 msg: `Task is updated successfully`,
             });
         } catch (err) {

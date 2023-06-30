@@ -14,8 +14,8 @@ module.exports = {
             .required()
             .messages({
                 "string.email": "Email must be a valid email",
-                "string.empty": "Email is required",
-                "any.required": "Email is required",
+                "string.empty": "Email is a required field",
+                "any.required": "Email is a required field",
             })
             .example("example@gmail.com"),
         password: Joi.string()
@@ -26,21 +26,25 @@ module.exports = {
             .messages({
                 "string.pattern.base":
                     "Password must contain only alphanumeric characters and @",
-                "string.base": `Password is required`,
+                "string.base": `Password is a required field`,
                 "string.empty": `Password should not be empty`,
                 "string.min": `Password should have a minimum length of {#limit}`,
                 "string.max": `Password should have a maximum length of {#limit}`,
-                "any.required": `password is required`,
+                "any.required": `Password is a required field`,
             })
             .example("example@123"),
         phoneNumber: Joi.string()
             .pattern(new RegExp("^[0-9]{10}$"))
             .required()
+            .min(10)
+            .max(10)
             .messages({
                 "string.pattern.base": "Phone Number must contain only numbers",
-                "string.base": `Phone Number is required`,
+                "string.base": `Phone Number is a required field`,
                 "string.empty": `Phone Number should not be empty`,
-                "any.required": `Phone Number is required`,
+                "string.min": `Phone Number should have a minimum length of {#limit}`,
+                "string.max": `Phone Number should have a maximum length of {#limit}`,
+                "any.required": `Phone Number is a required field`,
             })
             .example("1234567890"),
     }),
@@ -51,8 +55,8 @@ module.exports = {
             .required()
             .messages({
                 "string.email": "Email must be a valid email",
-                "string.empty": "Email is required",
-                "any.required": "Email is required",
+                "string.empty": "Email is a required field",
+                "any.required": "Email is a required field",
             })
             .example("example@gamil.com"),
         password: Joi.string()
@@ -63,9 +67,9 @@ module.exports = {
             .messages({
                 "string.pattern.base":
                     "Password must contain only alphanumeric characters and @",
-                "string.base": `Password is required`,
+                "string.base": `Password is a required field`,
                 "string.empty": `Password should not be empty`,
-                "any.required": `password is required`,
+                "any.required": `Password is a required field`,
                 "string.min": `Password should have a minimum length of {#limit}`,
                 "string.max": `Password should have a maximum length of {#limit}`,
             })
@@ -77,8 +81,8 @@ module.exports = {
             .required()
             .messages({
                 "string.email": "Email must be a valid email",
-                "string.empty": "Email is required",
-                "any.required": "Email is required",
+                "string.empty": "Email is a required field",
+                "any.required": "Email is a required field",
             })
             .example("example@gamil.com"),
     }),
@@ -91,9 +95,9 @@ module.exports = {
             .messages({
                 "string.pattern.base":
                     "Password must contain only alphanumeric characters and @",
-                "string.base": `New Password is required`,
+                "string.base": `New Password is a required field`,
                 "string.empty": `New Password should not be empty`,
-                "any.required": `New password is required`,
+                "any.required": `New password is a required field`,
                 "string.min": `New Password should have a minimum length of {#limit}`,
                 "string.max": `New Password should have a maximum length of {#limit}`,
             })
@@ -103,14 +107,14 @@ module.exports = {
             .valid(Joi.ref("password"))
             .messages({
                 "any.only": "Confirm Password must match with Password",
-                "string.base": `Confirm Password is required`,
+                "string.base": `Confirm Password is a required field`,
                 "string.empty": `Confirm Password should not be empty`,
-                "any.required": `Confirm Password is required`,
+                "any.required": `Confirm Password is a required field`,
             }),
         token: Joi.string().guid({ version: "uuidv4" }).required().messages({
             "string.guid": "Token must be a valid token",
-            "string.empty": "Token is required",
-            "any.required": "Token is required",
+            "string.empty": "Token is a required field",
+            "any.required": "Token is a required field",
         }),
     }),
 };

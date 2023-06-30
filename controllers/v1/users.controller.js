@@ -152,14 +152,14 @@ module.exports = {
             /**
                 #swagger.responses[200] = {
                     schema: { $ref: "#/definitions/ForgetPasswordResponse" },
-                    description: 'Here is our onetime token to reset password'
+                    description: 'Here is your onetime token to reset password'
                 }
             */
             if (user.forgetPasswordToken) {
                 return res.status(StatusCodes.OK).json({
                     success: true,
                     token,
-                    msg: "Here is our onetime token to reset password",
+                    msg: "you already have a token to reset password",
                 });
             }
 
@@ -177,7 +177,7 @@ module.exports = {
             res.status(StatusCodes.OK).json({
                 success: true,
                 token,
-                msg: "Reset password token sent to email",
+                msg: "Here is your onetime token to reset password",
             });
         } catch (err) {
             /*
@@ -257,7 +257,7 @@ module.exports = {
             */
             res.status(StatusCodes.OK).json({
                 success: true,
-                msg: "Password reset succesfully",
+                msg: "Password reset successfully",
             });
         } catch (err) {
             /*

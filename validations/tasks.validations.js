@@ -10,12 +10,15 @@ module.exports = {
             "any.required": `Title is a required field`,
         }),
 
-        description: Joi.string().required().min(3).max(100).messages({
+        description: Joi.string().required().min(5).max(100).messages({
             "string.base": `Description should be a type of 'text'`,
             "string.empty": `Description cannot be an empty field`,
             "string.min": `Description should have a minimum length of {#limit}`,
             "string.max": `Description should have a maximum length of {#limit}`,
             "any.required": `Description is a required field`,
+        }),
+        completed: Joi.boolean().messages({ 
+            "boolean.base": `Completed should be a type of 'boolean'`,
         }),
     }),
 
