@@ -53,7 +53,7 @@ const corsOptions = {
     optionsSuccessStatus: 200,
 };
 app.set("trust proxy", Number(process.env.TRUST_PROXY));
-app.use(limiter);
+// app.use(limiter);
 app.use(cors(corsOptions));
 app.use(helmet());
 app.use(express.json());
@@ -78,10 +78,10 @@ app.use(
 );
 
 // API Routes
-app.use(`/api/v1/users`, userRoutes);
+app.use(`/api/v1/users`, limiter, userRoutes);
 app.use(`/api/v1/tasks`, taskRoutes);
 
-// Error handling middleware
+// Error handling middlewareI
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 

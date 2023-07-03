@@ -207,7 +207,7 @@ describe("+++++++++++++ Users APIs Unit Testing +++++++++++++", () => {
                 .post("/api/v1/users/login")
                 .send(user)
                 .end((err, response) => {
-                    response.should.have.status(422);
+                    response.should.have.status(StatusCodes.UNPROCESSABLE_ENTITY);
                     response.body.should.be.a("object");
                     response.body.should.have
                         .property("msg")
@@ -224,7 +224,7 @@ describe("+++++++++++++ Users APIs Unit Testing +++++++++++++", () => {
                 .post("/api/v1/users/login")
                 .send(user)
                 .end((err, response) => {
-                    response.should.have.status(422);
+                    response.should.have.status(StatusCodes.UNPROCESSABLE_ENTITY);
                     response.body.should.be.a("object");
                     response.body.should.have
                         .property("msg")
@@ -242,7 +242,7 @@ describe("+++++++++++++ Users APIs Unit Testing +++++++++++++", () => {
                 .post("/api/v1/users/login")
                 .send(user)
                 .end((err, response) => {
-                    response.should.have.status(422);
+                    response.should.have.status(StatusCodes.UNPROCESSABLE_ENTITY);
                     response.body.should.be.a("object");
                     response.body.should.have
                         .property("msg")
@@ -260,7 +260,7 @@ describe("+++++++++++++ Users APIs Unit Testing +++++++++++++", () => {
                 .post("/api/v1/users/login")
                 .send(user)
                 .end((err, response) => {
-                    response.should.have.status(400);
+                    response.should.have.status(StatusCodes.BAD_REQUEST);
                     response.body.should.be.a("object");
                     response.body.should.have
                         .property("msg")
@@ -278,7 +278,7 @@ describe("+++++++++++++ Users APIs Unit Testing +++++++++++++", () => {
                 .post("/api/v1/users/login")
                 .send(user)
                 .end((err, response) => {
-                    response.should.have.status(400);
+                    response.should.have.status(StatusCodes.BAD_REQUEST);
                     response.body.should.be.a("object");
                     response.body.should.have
                         .property("msg")
@@ -404,7 +404,7 @@ describe("+++++++++++++ Users APIs Unit Testing +++++++++++++", () => {
                 .post("/api/v1/users/forget-password")
                 .send(user)
                 .end((err, response) => {
-                    response.should.have.status(422);
+                    response.should.have.status(StatusCodes.UNPROCESSABLE_ENTITY);
                     response.body.should.be.a("object");
                     response.body.should.have
                         .property("msg")
@@ -421,7 +421,7 @@ describe("+++++++++++++ Users APIs Unit Testing +++++++++++++", () => {
                 .post("/api/v1/users/forget-password")
                 .send(user)
                 .end((err, response) => {
-                    response.should.have.status(422);
+                    response.should.have.status(StatusCodes.UNPROCESSABLE_ENTITY);
                     response.body.should.be.a("object");
                     response.body.should.have
                         .property("msg")
@@ -508,7 +508,7 @@ describe("+++++++++++++ Users APIs Unit Testing +++++++++++++", () => {
                             confirmPassword: "test12345",
                         })
                         .end((err, res) => {
-                            res.should.have.status(422);
+                            res.should.have.status(StatusCodes.UNPROCESSABLE_ENTITY);
                             res.body.should.be.a("object");
                             res.body.should.have
                                 .property("msg")
@@ -532,7 +532,7 @@ describe("+++++++++++++ Users APIs Unit Testing +++++++++++++", () => {
                             token: res.body.token,
                         })
                         .end((err, res) => {
-                            res.should.have.status(422);
+                            res.should.have.status(StatusCodes.UNPROCESSABLE_ENTITY);
                             res.body.should.be.a("object");
                             res.body.should.have
                                 .property("msg")
@@ -556,7 +556,7 @@ describe("+++++++++++++ Users APIs Unit Testing +++++++++++++", () => {
                             token: res.body.token,
                         })
                         .end((err, res) => {
-                            res.should.have.status(422);
+                            res.should.have.status(StatusCodes.UNPROCESSABLE_ENTITY);
                             res.body.should.be.a("object");
                             res.body.should.have
                                 .property("msg")
@@ -582,7 +582,7 @@ describe("+++++++++++++ Users APIs Unit Testing +++++++++++++", () => {
                             token: res.body.token + "1",
                         })
                         .end((err, res) => {
-                            res.should.have.status(422);
+                            res.should.have.status(StatusCodes.UNPROCESSABLE_ENTITY);
                             res.body.should.be.a("object");
                             res.body.should.have
                                 .property("msg")
@@ -607,7 +607,7 @@ describe("+++++++++++++ Users APIs Unit Testing +++++++++++++", () => {
                             token: res.body.token,
                         })
                         .end((err, res) => {
-                            res.should.have.status(400);
+                            res.should.have.status(StatusCodes.BAD_REQUEST);
                             res.body.should.be.a("object");
                             res.body.should.have
                                 .property("msg")

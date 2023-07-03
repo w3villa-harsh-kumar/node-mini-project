@@ -3,6 +3,7 @@ const chaiHttp = require("chai-http");
 
 const app = require("../index");
 const Task = require("../models/task.model");
+const { StatusCodes } = require("http-status-codes");
 
 chai.use(chaiHttp);
 chai.should();
@@ -45,7 +46,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .post("/api/v1/tasks")
                 .send(task)
                 .end((err, res) => {
-                    res.should.have.status(401);
+                    res.should.have.status(StatusCodes.UNAUTHORIZED);
                     res.body.should.be.a("object");
                     res.body.should.have
                         .property("msg")
@@ -64,7 +65,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .set("Authorization", `Bearer ${testToken}`)
                 .send(task)
                 .end((err, res) => {
-                    res.should.have.status(422);
+                    res.should.have.status(StatusCodes.UNPROCESSABLE_ENTITY);
                     res.body.should.be.a("object");
                     res.body.should.have
                         .property("msg")
@@ -83,7 +84,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .set("Authorization", `Bearer ${testToken}`)
                 .send(task)
                 .end((err, res) => {
-                    res.should.have.status(422);
+                    res.should.have.status(StatusCodes.UNPROCESSABLE_ENTITY);
                     res.body.should.be.a("object");
                     res.body.should.have
                         .property("msg")
@@ -102,7 +103,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .set("Authorization", `Bearer ${testToken}`)
                 .send(task)
                 .end((err, res) => {
-                    res.should.have.status(422);
+                    res.should.have.status(StatusCodes.UNPROCESSABLE_ENTITY);
                     res.body.should.be.a("object");
                     res.body.should.have
                         .property("msg")
@@ -121,7 +122,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .set("Authorization", `Bearer ${testToken}`)
                 .send(task)
                 .end((err, res) => {
-                    res.should.have.status(422);
+                    res.should.have.status(StatusCodes.UNPROCESSABLE_ENTITY);
                     res.body.should.be.a("object");
                     res.body.should.have
                         .property("msg")
@@ -140,7 +141,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .set("Authorization", `Bearer ${testToken}`)
                 .send(task)
                 .end((err, res) => {
-                    res.should.have.status(422);
+                    res.should.have.status(StatusCodes.UNPROCESSABLE_ENTITY);
                     res.body.should.be.a("object");
                     res.body.should.have
                         .property("msg")
@@ -159,7 +160,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .set("Authorization", `Bearer ${testToken}`)
                 .send(task)
                 .end((err, res) => {
-                    res.should.have.status(422);
+                    res.should.have.status(StatusCodes.UNPROCESSABLE_ENTITY);
                     res.body.should.be.a("object");
                     res.body.should.have
                         .property("msg")
@@ -168,7 +169,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 });
         });
 
-        it("It should not create a task with description more than 200 characters", (done) => {
+        it("It should not create a task with description more than StatusCodes.OK characters", (done) => {
             const task = {
                 title: "Task 1",
                 description:
@@ -180,7 +181,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .set("Authorization", `Bearer ${testToken}`)
                 .send(task)
                 .end((err, res) => {
-                    res.should.have.status(422);
+                    res.should.have.status(StatusCodes.UNPROCESSABLE_ENTITY);
                     res.body.should.be.a("object");
                     res.body.should.have
                         .property("msg")
@@ -196,7 +197,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .get("/api/v1/tasks")
                 .set("Authorization", `Bearer ${testToken}`)
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(StatusCodes.OK);
                     res.body.should.be.a("object");
                     res.body.tasks.should.be.a("array");
                     done();
@@ -207,7 +208,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
             chai.request(app)
                 .get("/api/v1/tasks")
                 .end((err, res) => {
-                    res.should.have.status(401);
+                    res.should.have.status(StatusCodes.UNAUTHORIZED);
                     res.body.should.be.a("object");
                     res.body.should.have
                         .property("msg")
@@ -221,7 +222,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .get("/api/v1/tasks?completed=true")
                 .set("Authorization", `Bearer ${testToken}`)
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(StatusCodes.OK);
                     res.body.tasks.should.be.a("array");
                     res.body.tasks.length.should.be.eq(0);
                     done();
@@ -233,7 +234,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .get("/api/v1/tasks?completed=false")
                 .set("Authorization", `Bearer ${testToken}`)
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(StatusCodes.OK);
                     res.body.tasks.should.be.a("array");
                     res.body.tasks.length.should.be.eq(1);
                     done();
@@ -245,7 +246,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .get("/api/v1/tasks?completed=false&title=Task 1")
                 .set("Authorization", `Bearer ${testToken}`)
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(StatusCodes.OK);
                     res.body.tasks.should.be.a("array");
                     res.body.tasks.length.should.be.eq(1);
                     done();
@@ -257,7 +258,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .get("/api/v1/tasks?completed=false&title=Task 2")
                 .set("Authorization", `Bearer ${testToken}`)
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(StatusCodes.OK);
                     res.body.tasks.should.be.a("array");
                     res.body.tasks.length.should.be.eq(0);
                     done();
@@ -269,7 +270,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .get("/api/v1/tasks?fields=title,description")
                 .set("Authorization", `Bearer ${testToken}`)
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(StatusCodes.OK);
                     res.body.tasks.should.be.a("array");
                     res.body.tasks.length.should.be.eq(1);
                     res.body.tasks[0].should.have.property("title");
@@ -284,7 +285,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .get("/api/v1/tasks?fields=title,description&completed=true")
                 .set("Authorization", `Bearer ${testToken}`)
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(StatusCodes.OK);
                     res.body.tasks.should.be.a("array");
                     res.body.tasks.length.should.be.eq(0);
                     done();
@@ -296,7 +297,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .get("/api/v1/tasks?fields=title,description&completed=false")
                 .set("Authorization", `Bearer ${testToken}`)
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(StatusCodes.OK);
                     res.body.tasks.should.be.a("array");
                     res.body.tasks.length.should.be.eq(1);
                     res.body.tasks[0].should.have.property("title");
@@ -311,7 +312,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .get("/api/v1/tasks?fields=title,description&title=Task 1")
                 .set("Authorization", `Bearer ${testToken}`)
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(StatusCodes.OK);
                     res.body.tasks.should.be.a("array");
                     res.body.tasks.length.should.be.eq(1);
                     res.body.tasks[0].should.have.property("title");
@@ -326,7 +327,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .get("/api/v1/tasks?sort=title")
                 .set("Authorization", `Bearer ${testToken}`)
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(StatusCodes.OK);
                     const tasks = res.body.tasks;
                     tasks.should.be.a("array");
                     tasks.length.should.be.eq(1);
@@ -349,7 +350,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                         .get("/api/v1/tasks?sort=-title")
                         .set("Authorization", `Bearer ${testToken}`)
                         .end((err, res) => {
-                            res.should.have.status(200);
+                            res.should.have.status(StatusCodes.OK);
                             const tasks = res.body.tasks;
                             tasks.should.be.a("array");
                             tasks.length.should.be.eq(2);
@@ -374,7 +375,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                         .get("/api/v1/tasks?page=1&limit=1")
                         .set("Authorization", `Bearer ${testToken}`)
                         .end((err, res) => {
-                            res.should.have.status(200);
+                            res.should.have.status(StatusCodes.OK);
                             const tasks = res.body.tasks;
                             tasks.should.be.a("array");
                             tasks.length.should.be.eq(1);
@@ -398,7 +399,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                         .get("/api/v1/tasks")
                         .set("Authorization", `Bearer ${testToken}`)
                         .end((err, res) => {
-                            res.should.have.status(200);
+                            res.should.have.status(StatusCodes.OK);
                             const tasks = res.body.tasks;
                             tasks.should.be.a("array");
                             tasks.length.should.be.eq(4);
@@ -414,7 +415,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .get("/api/v1/tasks?page=invalid&limit=invalid")
                 .set("Authorization", `Bearer ${testToken}`)
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(StatusCodes.OK);
                     const tasks = res.body.tasks;
                     tasks.should.be.a("array");
                     tasks.length.should.be.eq(4);
@@ -437,7 +438,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                         .get(`/api/v1/tasks/${taskId}`)
                         .set("Authorization", `Bearer ${testToken}`)
                         .end((err, res) => {
-                            res.should.have.status(200);
+                            res.should.have.status(StatusCodes.OK);
                             res.body.task.should.have.property("title");
                             res.body.task.should.have.property("description");
                             res.body.task.should.have.property("completed");
@@ -459,7 +460,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .set("Authorization", `Bearer ${testToken}`)
                 .end((err, res) => {
                     console.log(res.body);
-                    res.should.have.status(422);
+                    res.should.have.status(StatusCodes.UNPROCESSABLE_ENTITY);
                     res.body.should.have
                         .property("msg")
                         .eql("Id should be a valid mongo id");
@@ -468,7 +469,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
         });
 
         it("It should NOT GET a task with non-existing ID", (done) => {
-            const taskId = "5f3d1c4a1c9d440000000000";
+            const taskId = "5f3d1c4a1c9d4StatusCodes.BAD_REQUEST00000000";
             chai.request(app)
                 .get(`/api/v1/tasks/${taskId}`)
                 .set("Authorization", `Bearer ${testToken}`)
@@ -476,17 +477,17 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                     res.should.have.status(404);
                     res.body.should.have
                         .property("msg")
-                        .eql("No task found with id: 5f3d1c4a1c9d440000000000");
+                        .eql("No task found with id: 5f3d1c4a1c9d4StatusCodes.BAD_REQUEST00000000");
                     done();
                 });
         });
 
         it("It should NOT GET a task without token", (done) => {
-            const taskId = "5f3d1c4a1c9d440000000000";
+            const taskId = "5f3d1c4a1c9d4StatusCodes.BAD_REQUEST00000000";
             chai.request(app)
                 .get(`/api/v1/tasks/${taskId}`)
                 .end((err, res) => {
-                    res.should.have.status(401);
+                    res.should.have.status(StatusCodes.UNAUTHORIZED);
                     res.body.should.have
                         .property("msg")
                         .eql("Not authorized to access this route");
@@ -495,12 +496,12 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
         });
 
         it("It should NOT GET a task with invalid token", (done) => {
-            const taskId = "5f3d1c4a1c9d440000000000";
+            const taskId = "5f3d1c4a1c9d4StatusCodes.BAD_REQUEST00000000";
             chai.request(app)
                 .get(`/api/v1/tasks/${taskId}`)
                 .set("Authorization", `Bearer ${testToken}invalid`)
                 .end((err, res) => {
-                    res.should.have.status(401);
+                    res.should.have.status(StatusCodes.UNAUTHORIZED);
                     res.body.should.have
                         .property("msg")
                         .eql("Not authorized to access this route");
@@ -524,7 +525,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                             completed: true,
                         })
                         .end((err, res) => {
-                            res.should.have.status(200);
+                            res.should.have.status(StatusCodes.OK);
                             res.body.task.should.have.property("title");
                             res.body.task.should.have.property("description");
                             res.body.task.should.have.property("completed");
@@ -549,7 +550,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                     completed: true,
                 })
                 .end((err, res) => {
-                    res.should.have.status(422);
+                    res.should.have.status(StatusCodes.UNPROCESSABLE_ENTITY);
                     res.body.should.have
                         .property("msg")
                         .eql("Id should be a valid mongo id");
@@ -558,7 +559,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
         });
 
         it("It should NOT PUT a task with non-existing ID", (done) => {
-            const taskId = "5f3d1c4a1c9d440000000000";
+            const taskId = "5f3d1c4a1c9d4StatusCodes.BAD_REQUEST00000000";
             chai.request(app)
                 .patch(`/api/v1/tasks/${taskId}`)
                 .set("Authorization", `Bearer ${testToken}`)
@@ -570,13 +571,13 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                     res.should.have.status(404);
                     res.body.should.have
                         .property("msg")
-                        .eql("No task found with id: 5f3d1c4a1c9d440000000000");
+                        .eql("No task found with id: 5f3d1c4a1c9d4StatusCodes.BAD_REQUEST00000000");
                     done();
                 });
         });
 
         it("It should NOT PUT a task without token", (done) => {
-            const taskId = "5f3d1c4a1c9d440000000000";
+            const taskId = "5f3d1c4a1c9d4StatusCodes.BAD_REQUEST00000000";
             chai.request(app)
                 .patch(`/api/v1/tasks/${taskId}`)
                 .send({
@@ -584,7 +585,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                     completed: true,
                 })
                 .end((err, res) => {
-                    res.should.have.status(401);
+                    res.should.have.status(StatusCodes.UNAUTHORIZED);
                     res.body.should.have
                         .property("msg")
                         .eql("Not authorized to access this route");
@@ -593,7 +594,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
         });
 
         it("It should NOT PUT a task with invalid token", (done) => {
-            const taskId = "5f3d1c4a1c9d440000000000";
+            const taskId = "5f3d1c4a1c9d4StatusCodes.BAD_REQUEST00000000";
             chai.request(app)
                 .patch(`/api/v1/tasks/${taskId}`)
                 .set("Authorization", `Bearer ${testToken}invalid`)
@@ -602,7 +603,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                     completed: true,
                 })
                 .end((err, res) => {
-                    res.should.have.status(401);
+                    res.should.have.status(StatusCodes.UNAUTHORIZED);
                     res.body.should.have
                         .property("msg")
                         .eql("Not authorized to access this route");
@@ -622,7 +623,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                         .delete(`/api/v1/tasks/${taskId}`)
                         .set("Authorization", `Bearer ${testToken}`)
                         .end((err, res) => {
-                            res.should.have.status(200);
+                            res.should.have.status(StatusCodes.OK);
                             res.body.should.have
                                 .property("msg")
                                 .eql("Task is deleted successfully");
@@ -637,7 +638,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                 .delete(`/api/v1/tasks/${taskId}`)
                 .set("Authorization", `Bearer ${testToken}`)
                 .end((err, res) => {
-                    res.should.have.status(422);
+                    res.should.have.status(StatusCodes.UNPROCESSABLE_ENTITY);
                     res.body.should.have
                         .property("msg")
                         .eql("Id should be a valid mongo id");
@@ -646,7 +647,7 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
         });
 
         it("It should NOT DELETE a task with non-existing ID", (done) => {
-            const taskId = "5f3d1c4a1c9d440000000000";
+            const taskId = "5f3d1c4a1c9d4StatusCodes.BAD_REQUEST00000000";
             chai.request(app)
                 .delete(`/api/v1/tasks/${taskId}`)
                 .set("Authorization", `Bearer ${testToken}`)
@@ -654,17 +655,17 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
                     res.should.have.status(404);
                     res.body.should.have
                         .property("msg")
-                        .eql("No task found with id: 5f3d1c4a1c9d440000000000");
+                        .eql("No task found with id: 5f3d1c4a1c9d4StatusCodes.BAD_REQUEST00000000");
                     done();
                 });
         });
 
         it("It should NOT DELETE a task without token", (done) => {
-            const taskId = "5f3d1c4a1c9d440000000000";
+            const taskId = "5f3d1c4a1c9d4StatusCodes.BAD_REQUEST00000000";
             chai.request(app)
                 .delete(`/api/v1/tasks/${taskId}`)
                 .end((err, res) => {
-                    res.should.have.status(401);
+                    res.should.have.status(StatusCodes.UNAUTHORIZED);
                     res.body.should.have
                         .property("msg")
                         .eql("Not authorized to access this route");
@@ -673,12 +674,12 @@ describe("++++++++++++++ Tasks APIs Unit Testing ++++++++++++++", () => {
         });
 
         it("It should NOT DELETE a task with invalid token", (done) => {
-            const taskId = "5f3d1c4a1c9d440000000000";
+            const taskId = "5f3d1c4a1c9d4StatusCodes.BAD_REQUEST00000000";
             chai.request(app)
                 .delete(`/api/v1/tasks/${taskId}`)
                 .set("Authorization", `Bearer ${testToken}invalid`)
                 .end((err, res) => {
-                    res.should.have.status(401);
+                    res.should.have.status(StatusCodes.UNAUTHORIZED);
                     res.body.should.have
                         .property("msg")
                         .eql("Not authorized to access this route");
